@@ -1,6 +1,7 @@
 import { BiometricsData } from './biometrics';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api/auth';
+const BASE_URL = import.meta.env.VITE_API_URL || '';
+const API_BASE = `${BASE_URL.replace(/\/$/, '')}/api/auth`;
 
 export interface Point {
     x: number;
