@@ -12,3 +12,4 @@ redis==5.0.1
 pydantic-settings==2.1.0
 cryptography==42.0.2
 numpy==1.26.4
+scikit-learn==1.4.0
