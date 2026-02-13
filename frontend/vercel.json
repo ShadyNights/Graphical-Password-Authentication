@@ -21,7 +21,7 @@
                 },
                 {
                     "key": "Content-Security-Policy",
-                    "value": "default-src 'self'; connect-src 'self' https://your-backend.onrender.com; img-src 'self' data:;"
+                    "value": "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://graphical-password-authentication-avlt.onrender.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval';"
                 }
             ]
         }
