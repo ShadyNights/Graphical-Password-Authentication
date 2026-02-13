@@ -14,7 +14,11 @@ PRODUCTION = os.getenv("GPA_ENV", "dev") == "production"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_db()
+    try:
+        await init_db()
+    except Exception as e:
+        # Race condition on multiprocess startup is expected if tables created by another worker
+        pass
     yield
 
 app = FastAPI(
