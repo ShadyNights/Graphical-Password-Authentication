@@ -1,0 +1,16 @@
+enable-modules:
+  - vulnerability
+  - misconfiguration
+  - secret
+
+scan:
+  security-checks:
+    - vuln
+    - config
+    - secret
+
+severity:
+  - HIGH
+  - CRITICAL
+
+exit-code: 1

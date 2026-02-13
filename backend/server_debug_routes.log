@@ -1,0 +1,63 @@
+ROUTE: /openapi.json {'HEAD', 'GET'}
+ROUTE: /docs {'HEAD', 'GET'}
+ROUTE: /docs/oauth2-redirect {'HEAD', 'GET'}
+ROUTE: /redoc {'HEAD', 'GET'}
+ROUTE: /api/auth/challenge {'POST'}
+ROUTE: /api/auth/register {'POST'}
+ROUTE: /api/auth/login {'POST'}
+ROUTE: /api/auth/images {'GET'}
+INFO:     Started server process [30892]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:1309 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1310 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:1311 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1312 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1314 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1315 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1316 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1317 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+DEBUG: Processing metrics for redteam_bot_1771004803
+DEBUG: Features extracted: 6
+DEBUG: Risk result: {'ml_score': 0.0, 'ml_risk_level': 'unknown', 'ml_available': False, 'drift_score': 0.0, 'anomalies': []}
+INFO:     127.0.0.1:1318 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1362 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:1363 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:1364 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:1365 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:1366 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:3227 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3228 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:3229 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3230 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3231 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3232 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3233 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3234 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+DEBUG: Processing metrics for redteam_bot_1771005691
+DEBUG: Features extracted: 6
+DEBUG: Risk result: {'ml_score': 0.0, 'ml_risk_level': 'unknown', 'ml_available': False, 'drift_score': 0.0, 'anomalies': []}
+INFO:     127.0.0.1:3235 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3240 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:3242 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:3243 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:3244 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:3245 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:6111 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6112 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:6113 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6114 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6116 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6117 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6118 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6119 - "POST /api/auth/challenge HTTP/1.1" 200 OK
+DEBUG: Processing metrics for redteam_bot_1771005748
+DEBUG: Features extracted: 6
+DEBUG: Risk result: {'ml_score': 0.0, 'ml_risk_level': 'unknown', 'ml_available': False, 'drift_score': 0.0, 'anomalies': []}
+INFO:     127.0.0.1:6120 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6129 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:6130 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:6131 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:6132 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:6134 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity

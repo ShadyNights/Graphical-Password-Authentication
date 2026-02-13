@@ -1,0 +1,59 @@
+import os
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.config import settings
+from app.db.session import init_db
+from app.routes import api_router
+from app.middleware.security_headers import SecurityHeadersMiddleware
+from app.middleware.timing_guard import TimingGuardMiddleware
+from app.core.logging import setup_logging
+from app.middleware.request_id import RequestIdMiddleware
+
+PRODUCTION = os.getenv("GPA_ENV", "dev") == "production"
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    yield
+
+app = FastAPI(
+    title="Graphical Password Authentication",
+    description="Adversarial-grade GPA with hybrid recognition + cued recall",
+    version="2.0.0",
+    lifespan=lifespan,
+    docs_url=None if PRODUCTION else "/docs",      # Disable in prod
+    redoc_url=None if PRODUCTION else "/redoc",     # Disable in prod
+    openapi_url=None if PRODUCTION else "/openapi.json",
+)
+
+# Initialize Logging
+setup_logging()
+
+# ── Middleware Stack (order matters: last added = first executed) ──────────
+
+# 4. CORS (Inner)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[settings.FRONTEND_URL, "http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
+
+# 3. Request ID
+app.add_middleware(RequestIdMiddleware)
+
+# 2. Security Headers
+app.add_middleware(SecurityHeadersMiddleware)
+
+# 1. Global Timing Padding (Outermost - First executed, Last to return)
+app.add_middleware(TimingGuardMiddleware)
+
+# ── Routes ─────────────────────────────────────────────────────────────────
+
+app.include_router(api_router)
+
+@app.get("/health")
+async def health():
+    return {"status": "ok", "service": "gpa-auth", "version": "2.0.0"}

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gpa-auth-service
+  namespace: gpa-prod
+spec:
+  selector:
+    app: gpa-auth
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
