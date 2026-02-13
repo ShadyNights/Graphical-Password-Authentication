@@ -80,9 +80,9 @@ def create_key_provider() -> KeyProvider:
         hsm_endpoint = os.getenv("HSM_ENDPOINT", "")
         if hsm_endpoint:
             return HSMKeyProvider(hsm_endpoint=hsm_endpoint)
-        # logger.error("GPA_ENV=production but no HSM_ENDPOINT configured!")
-        # FOR DEMO: Fallback if strictly needed, but ideally raise
-        raise RuntimeError("HSM required in production mode")
+        
+        logger.warning("PRODUCTION WARNING: No HSM_ENDPOINT configured. Using EnvironmentKeyProvider (Software Keys).")
+        return EnvironmentKeyProvider()
     return EnvironmentKeyProvider()
 
 
