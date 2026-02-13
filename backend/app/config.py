@@ -25,6 +25,16 @@ class Settings(BaseSettings):
     TOTAL_IMAGES_SHOWN: int = 12
     CONSTANT_RESPONSE_MS: int = 160  # Target constant response time
 
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> Any:
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                return v.replace("postgres://", "postgresql+asyncpg://", 1)
+            if v.startswith("postgresql://") and not v.startswith("postgresql+asyncpg://"):
+                 return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return v
+
     class Config:
         env_file = ".env"
         extra = "ignore"
