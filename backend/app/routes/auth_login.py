@@ -143,12 +143,19 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
 
             audit_log("login_success", username=req.username, client_ip=client_ip, risk_score=risk_score, device_fingerprint=req.device_fingerprint or "")
             
+            # Compute entry hash
+            ts = datetime.utcnow().isoformat()
+            entry_data = f"{ts}{req.username}login_success{risk_score}".encode()
+            entry_hash = sha256(entry_data).hexdigest()
+
             db_audit = AuditLog(
                 user_id=user.id, username=req.username, ip=client_ip,
                 device_hash=req.device_fingerprint or "",
                 risk_score=risk_score, ml_score=ml_result.get("ml_score"),
                 action="login_success",
                 details=json.dumps(biometrics_result.get("component_scores", {})),
+                entry_hash=entry_hash,
+                timestamp=datetime.utcnow()
             )
             db.add(db_audit)
             await db.commit()
@@ -166,12 +173,19 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
 
             audit_log("login_failed", username=req.username, client_ip=client_ip, risk_score=risk_score, details={"failed_attempts": user.failed_attempts})
             
+            # Compute entry hash
+            ts = datetime.utcnow().isoformat()
+            entry_data = f"{ts}{req.username}login_failed{risk_score}".encode()
+            entry_hash = sha256(entry_data).hexdigest()
+
             db_audit = AuditLog(
                 user_id=user.id, username=req.username, ip=client_ip,
                 device_hash=req.device_fingerprint or "",
                 risk_score=risk_score, ml_score=ml_result.get("ml_score"),
                 action="login_failed",
                 details=json.dumps({"failed_attempts": user.failed_attempts}),
+                entry_hash=entry_hash,
+                timestamp=datetime.utcnow()
             )
             db.add(db_audit)
             await db.commit()
