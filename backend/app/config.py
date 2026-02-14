@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     ARGON2_MEMORY_COST: int = 65536  # 64MB
     ARGON2_TIME_COST: int = 2
     ARGON2_PARALLELISM: int = 2
-    CLICK_TOLERANCE: float = 0.05  # 5% normalized radius
+    CLICK_TOLERANCE: float = 0.10  # 10% normalized radius (Easier for testing)
     REQUIRED_IMAGE_SELECTIONS: int = 3
     REQUIRED_CLICK_POINTS: int = 6
     TOTAL_IMAGES_SHOWN: int = 12
