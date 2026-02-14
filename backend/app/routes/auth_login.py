@@ -180,4 +180,9 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
     except Exception as e:
         print(f"CRITICAL LOGIN ERROR: {e}")
         traceback.print_exc()
-        raise e
+        # Return error to client for debugging
+        return AuthResponse(
+            status="error", 
+            message=f"Server Error: {str(e)}", 
+            risk_level="unknown"
+        )
