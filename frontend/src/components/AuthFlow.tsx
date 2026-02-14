@@ -362,9 +362,7 @@ export default function AuthFlow() {
                                 {mode === 'register' ? 'Credential Established' : 'Access Granted'}
                             </h3>
                             <p className="result-subtitle">
-                                {mode === 'register'
-                                    ? 'Graphical credential hashed with Argon2id and committed to secure storage.'
-                                    : 'Identity verified. Encrypted session token issued.'}
+                                {result.message}
                             </p>
                             {result.risk_level && (
                                 <div style={{ marginBottom: '12px' }}>
