@@ -98,71 +98,86 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
             risk_level=risk_level,
         )
 
-    # DB Lookup
-    result = await db.execute(select(User).where(User.username == req.username))
-    user = result.scalar_one_or_none()
+    import traceback
+    try:
+        # DB Lookup
+        result = await db.execute(select(User).where(User.username == req.username))
+        user = result.scalar_one_or_none()
 
-    if not user:
-        generate_fake_hash()
-        audit_log("login_user_not_found", username=req.username, client_ip=client_ip, risk_score=risk_score)
-        await enforce_constant_time_helper(start_time, extra_delay)
-        return AuthResponse(status="processing", message="Authentication result pending")
+        if not user:
+            generate_fake_hash()
+            audit_log("login_user_not_found", username=req.username, client_ip=client_ip, risk_score=risk_score)
+            await enforce_constant_time_helper(start_time, extra_delay)
+            return AuthResponse(status="processing", message="Authentication result pending")
 
-    if is_account_locked(user):
-        generate_fake_hash()
-        audit_log("login_account_locked", username=req.username, client_ip=client_ip, risk_score=risk_score)
-        await enforce_constant_time_helper(start_time, extra_delay)
-        return AuthResponse(status="processing", message="Authentication result pending")
+        if is_account_locked(user):
+            generate_fake_hash()
+            audit_log("login_account_locked", username=req.username, client_ip=client_ip, risk_score=risk_score)
+            await enforce_constant_time_helper(start_time, extra_delay)
+            return AuthResponse(status="processing", message="Authentication result pending")
 
-    # Verify GPA
-    points = [(p.x, p.y) for p in req.click_points]
-    is_valid = verify_gpa_secret(
-        user.gpa_hash.decode("utf-8"),
-        req.selected_image_ids,
-        points,
-        user.salt,
-    )
-
-    if is_valid:
-        user.failed_attempts = 0
-        user.lockout_until = None
-        await db.commit()
-        token = create_jwt_token(user.id, user.username)
-
-        audit_log("login_success", username=req.username, client_ip=client_ip, risk_score=risk_score, device_fingerprint=req.device_fingerprint or "")
+        # Verify GPA
+        points = [(p.x, p.y) for p in req.click_points]
         
-        db_audit = AuditLog(
-            user_id=user.id, username=req.username, ip=client_ip,
-            device_hash=req.device_fingerprint or "",
-            risk_score=risk_score, ml_score=ml_result.get("ml_score"),
-            action="login_success",
-            details=json.dumps(biometrics_result.get("component_scores", {})),
-        )
-        db.add(db_audit)
-        await db.commit()
-
-        if metrics and risk_score < 0.3:
-            risk_engine.record_human_session(req.username, features)
-
-        await enforce_constant_time_helper(start_time, extra_delay)
-        return AuthResponse(status="success", message="Authentication successful", token=token, risk_level=risk_level)
-    else:
-        user.failed_attempts += 1
-        if should_lock_account(user):
-            user.lockout_until = get_lockout_time()
-        await db.commit()
-
-        audit_log("login_failed", username=req.username, client_ip=client_ip, risk_score=risk_score, details={"failed_attempts": user.failed_attempts})
+        # DEBUG: Check types
+        # print(f"DEBUG: Hash type: {type(user.gpa_hash)}, content: {user.gpa_hash}")
         
-        db_audit = AuditLog(
-            user_id=user.id, username=req.username, ip=client_ip,
-            device_hash=req.device_fingerprint or "",
-            risk_score=risk_score, ml_score=ml_result.get("ml_score"),
-            action="login_failed",
-            details=json.dumps({"failed_attempts": user.failed_attempts}),
-        )
-        db.add(db_audit)
-        await db.commit()
+        gpa_hash_str = user.gpa_hash
+        if isinstance(gpa_hash_str, bytes):
+             gpa_hash_str = gpa_hash_str.decode("utf-8")
 
-        await enforce_constant_time_helper(start_time, extra_delay)
-        return AuthResponse(status="failed", message="Authentication failed", risk_level=risk_level)
+        is_valid = verify_gpa_secret(
+            gpa_hash_str,
+            req.selected_image_ids,
+            points,
+            user.salt,
+        )
+
+        if is_valid:
+            user.failed_attempts = 0
+            user.lockout_until = None
+            await db.commit()
+            token = create_jwt_token(user.id, user.username)
+
+            audit_log("login_success", username=req.username, client_ip=client_ip, risk_score=risk_score, device_fingerprint=req.device_fingerprint or "")
+            
+            db_audit = AuditLog(
+                user_id=user.id, username=req.username, ip=client_ip,
+                device_hash=req.device_fingerprint or "",
+                risk_score=risk_score, ml_score=ml_result.get("ml_score"),
+                action="login_success",
+                details=json.dumps(biometrics_result.get("component_scores", {})),
+            )
+            db.add(db_audit)
+            await db.commit()
+
+            if metrics and risk_score < 0.3:
+                risk_engine.record_human_session(req.username, features)
+
+            await enforce_constant_time_helper(start_time, extra_delay)
+            return AuthResponse(status="success", message="Authentication successful", token=token, risk_level=risk_level)
+        else:
+            user.failed_attempts += 1
+            if should_lock_account(user):
+                user.lockout_until = get_lockout_time()
+            await db.commit()
+
+            audit_log("login_failed", username=req.username, client_ip=client_ip, risk_score=risk_score, details={"failed_attempts": user.failed_attempts})
+            
+            db_audit = AuditLog(
+                user_id=user.id, username=req.username, ip=client_ip,
+                device_hash=req.device_fingerprint or "",
+                risk_score=risk_score, ml_score=ml_result.get("ml_score"),
+                action="login_failed",
+                details=json.dumps({"failed_attempts": user.failed_attempts}),
+            )
+            db.add(db_audit)
+            await db.commit()
+
+            await enforce_constant_time_helper(start_time, extra_delay)
+            return AuthResponse(status="failed", message="Authentication failed", risk_level=risk_level)
+    
+    except Exception as e:
+        print(f"CRITICAL LOGIN ERROR: {e}")
+        traceback.print_exc()
+        raise e

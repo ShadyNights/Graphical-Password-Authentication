@@ -27,6 +27,11 @@ async def get_db():
             await session.close()
 
 
+import os
+
 async def init_db():
     async with engine.begin() as conn:
+        if os.getenv("FORCE_RESET_DB") == "true":
+             print("WARNING: FORCE_RESET_DB is set. Dropping all tables...")
+             await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
