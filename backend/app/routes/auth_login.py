@@ -10,7 +10,7 @@ from app.schemas.auth_schema import LoginRequest, AuthResponse
 from app.security import (
     validate_challenge, check_rate_limit, is_account_locked, should_lock_account,
     get_lockout_time, get_escalation_delay, generate_fake_hash,
-    verify_gpa_secret, create_jwt_token, audit_log
+    verify_gpa_secret, create_jwt_token, audit_log, get_gpa_debug_info
 )
 from app.biometric.rule_engine import analyze_behavioral_biometrics
 from app.biometric.feature_extractor import extract_feature_vector

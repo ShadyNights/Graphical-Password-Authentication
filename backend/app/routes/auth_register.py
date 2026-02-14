@@ -10,7 +10,7 @@ from app.schemas.auth_schema import RegisterRequest, AuthResponse
 from app.security import (
     validate_challenge, generate_salt, hash_gpa_secret,
     encrypt_recognition_data, create_jwt_token,
-    audit_log, keys
+    audit_log, keys, get_gpa_debug_info
 )
 # Note: enforce_constant_time logic should be imported if strict timing is needed on register failure
 # For now, we assume simple timing protection provided by hash steps
