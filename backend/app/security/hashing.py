@@ -38,6 +38,29 @@ def grid_index(nx: float, ny: float) -> int:
     return gy * GRID_WIDTH + gx
 
 
+def canonicalize_images(image_ids: List[str]) -> str:
+    """Sort image IDs to ensure order independence."""
+    return ",".join(sorted(image_ids))
+
+
+def canonicalize_points(points: List[tuple]) -> str:
+    """Convert points to grid cell indexes string."""
+    indexes = [str(grid_index(x, y)) for x, y in points]
+    return "|".join(indexes)
+
+
+def get_gpa_debug_info(image_ids: List[str], points: List[tuple]) -> dict:
+    """Return debug info about how inputs are interpreted."""
+    return {
+        "images_str": canonicalize_images(image_ids),
+        "points_str": canonicalize_points(points),
+        "grid_dims": f"{GRID_WIDTH}x{GRID_HEIGHT}",
+        "cell_size": f"{CELL_W}x{CELL_H}",
+        "tolerance": settings.CLICK_TOLERANCE
+    }
+
+
+
 def canonicalize_points(points: List[Tuple[float, float]]) -> str:
     """Output: '128|490|...|100'"""
     indexes = [str(grid_index(x, y)) for x, y in points]

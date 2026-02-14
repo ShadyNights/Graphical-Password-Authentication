@@ -191,7 +191,8 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
             await db.commit()
 
             await enforce_constant_time_helper(start_time, extra_delay)
-            return AuthResponse(status="failed", message="Authentication failed", risk_level=risk_level)
+            debug_info = get_gpa_debug_info(req.selected_image_ids, points)
+            return AuthResponse(status="failed", message=f"Authentication failed. DEBUG: {json.dumps(debug_info)}", risk_level=risk_level)
     
     except Exception as e:
         print(f"CRITICAL LOGIN ERROR: {e}")
