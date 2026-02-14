@@ -15,6 +15,8 @@ from app.security import (
 from app.biometric.rule_engine import analyze_behavioral_biometrics
 from app.biometric.feature_extractor import extract_feature_vector
 from app.biometric.risk_engine import risk_engine
+from hashlib import sha256
+from datetime import datetime
 
 # Helper for constant time logic
 async def enforce_constant_time_helper(start_time: float, extra_delay: float = 0.0):
