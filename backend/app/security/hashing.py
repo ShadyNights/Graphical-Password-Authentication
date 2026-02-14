@@ -14,9 +14,14 @@ ph = PasswordHasher(
     hash_len=32,
 )
 
-# Grid Constants
-GRID_WIDTH = 96
-GRID_HEIGHT = 54
+# Dynamic Grid based on Tolerance
+# Tolerance is % of screen width/height that counts as "same cell"
+# e.g. 0.10 (10%) of 1920 is 192px cell size
+t = settings.CLICK_TOLERANCE
+CELL_W = max(20, int(1920 * t))
+CELL_H = max(20, int(1080 * t))
+GRID_WIDTH = 1920 // CELL_W + 1
+GRID_HEIGHT = 1080 // CELL_H + 1
 
 
 def generate_salt() -> bytes:
@@ -28,8 +33,8 @@ def grid_index(nx: float, ny: float) -> int:
     """Convert normalized coordinates to grid cell index."""
     x_pixel = nx * 1920
     y_pixel = ny * 1080
-    gx = min(int(x_pixel / 20), GRID_WIDTH - 1)
-    gy = min(int(y_pixel / 20), GRID_HEIGHT - 1)
+    gx = min(int(x_pixel / CELL_W), GRID_WIDTH - 1)
+    gy = min(int(y_pixel / CELL_H), GRID_HEIGHT - 1)
     return gy * GRID_WIDTH + gx
 
 
