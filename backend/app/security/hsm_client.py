@@ -37,7 +37,7 @@ class EnvironmentKeyProvider(KeyProvider):
         self._pepper = os.getenv("GPA_PEPPER", "dev-pepper-value-store-in-hsm")
         self._secret_key = os.getenv("GPA_SECRET_KEY", "dev-secret-key-change-in-production-immediately")
         self._master_key = os.getenv("GPA_MASTER_KEY", "dev-master-key-change-in-production")
-        # logger.warning("Using EnvironmentKeyProvider — NOT for production use")
+        
 
     def get_pepper(self) -> bytes:
         return self._pepper.encode()
@@ -86,5 +86,5 @@ def create_key_provider() -> KeyProvider:
     return EnvironmentKeyProvider()
 
 
-# Singleton key provider
+
 keys = create_key_provider()

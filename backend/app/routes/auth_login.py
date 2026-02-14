@@ -18,7 +18,7 @@ from app.biometric.risk_engine import risk_engine
 from hashlib import sha256
 from datetime import datetime
 
-# Helper for constant time logic
+
 async def enforce_constant_time_helper(start_time: float, extra_delay: float = 0.0):
     from app.config import settings
     import asyncio
@@ -47,7 +47,7 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
         await enforce_constant_time_helper(start_time)
         return AuthResponse(status="processing", message="Authentication result pending")
 
-    # Phase II: Rule-based Analysis
+    
     metrics = req.mouse_metrics or {}
     if req.device_fingerprint:
         metrics["device_fingerprint"] = req.device_fingerprint
@@ -57,20 +57,20 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
     risk_score = biometrics_result["risk_score"]
     risk_level = biometrics_result["risk_level"]
 
-    # Phase III: ML Analysis
+    
     ml_result = {"ml_score": 0.0, "ml_risk_level": "unknown", "ml_available": False}
     if metrics:
         features = extract_feature_vector(metrics)
         ml_result = risk_engine.compute_risk(req.username, features)
         
-        # Bot Detection
+        
         if ml_result["ml_available"] and ml_result["ml_risk_level"] == "bot_likely":
             risk_score = max(risk_score, 0.7)
             risk_level = "bot_likely"
             biometrics_result["is_bot"] = True
             biometrics_result["reasons"].append("ml_anomaly_detected")
 
-        # Drift Detection
+        
         drift_score = ml_result.get("drift_score", 0.0)
         if drift_score > 3.0:
              risk_score = max(risk_score, 0.5)
@@ -102,7 +102,7 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
 
     import traceback
     try:
-        # DB Lookup
+        
         result = await db.execute(select(User).where(User.username == req.username))
         user = result.scalar_one_or_none()
 
@@ -118,11 +118,11 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
             await enforce_constant_time_helper(start_time, extra_delay)
             return AuthResponse(status="processing", message="Authentication result pending")
 
-        # Verify GPA
+        
         points = [(p.x, p.y) for p in req.click_points]
         
-        # DEBUG: Check types
-        # print(f"DEBUG: Hash type: {type(user.gpa_hash)}, content: {user.gpa_hash}")
+        
+        
         
         gpa_hash_str = user.gpa_hash
         if isinstance(gpa_hash_str, bytes):
@@ -143,7 +143,7 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
 
             audit_log("login_success", username=req.username, client_ip=client_ip, risk_score=risk_score, device_fingerprint=req.device_fingerprint or "")
             
-            # Compute entry hash
+            
             ts = datetime.utcnow().isoformat()
             entry_data = f"{ts}{req.username}login_success{risk_score}".encode()
             entry_hash = sha256(entry_data).hexdigest()
@@ -173,7 +173,7 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
 
             audit_log("login_failed", username=req.username, client_ip=client_ip, risk_score=risk_score, details={"failed_attempts": user.failed_attempts})
             
-            # Compute entry hash
+            
             ts = datetime.utcnow().isoformat()
             entry_data = f"{ts}{req.username}login_failed{risk_score}".encode()
             entry_hash = sha256(entry_data).hexdigest()
@@ -196,7 +196,7 @@ async def login(req: LoginRequest, request: Request, db: AsyncSession = Depends(
     except Exception as e:
         print(f"CRITICAL LOGIN ERROR: {e}")
         traceback.print_exc()
-        # Return error to client for debugging
+        
         return AuthResponse(
             status="error", 
             message=f"Server Error: {str(e)}", 

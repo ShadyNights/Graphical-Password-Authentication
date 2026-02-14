@@ -2,12 +2,12 @@ import logging
 import json
 from datetime import datetime, timezone
 
-# ── Structured Audit Logger ────────────────────────────────────────────────
+
 
 audit_logger = logging.getLogger("gpa.audit")
 audit_logger.setLevel(logging.INFO)
 
-# Ensure handler is not added multiple times during reloads
+
 if not audit_logger.handlers:
     _handler = logging.FileHandler("audit.log")
     _handler.setFormatter(logging.Formatter(

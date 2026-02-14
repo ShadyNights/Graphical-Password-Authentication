@@ -12,9 +12,9 @@ async def request_challenge(req: ChallengeRequest, request: Request):
     """
     client_ip = request.client.host if request.client else "unknown"
 
-    # Always return a challenge to prevent enumeration, even if rate limited
+    
     if not check_rate_limit(client_ip):
-        pass  # Logged internally in security module
+        pass  
 
     challenge = create_challenge(req.username)
     return ChallengeResponse(

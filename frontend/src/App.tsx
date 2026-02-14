@@ -16,7 +16,7 @@ function ShieldIcon() {
 export default function App() {
     return (
         <div className="app-shell scan-overlay">
-            {/* ── Logo Section ───────────────────────────────────── */}
+            {}
             <div className="logo-section">
                 <div className="logo-icon">
                     <ShieldIcon />
@@ -30,7 +30,7 @@ export default function App() {
                 </div>
             </div>
 
-            {/* ── Auth Flow ──────────────────────────────────────── */}
+            {}
             <AuthFlow />
         </div>
     )

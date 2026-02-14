@@ -72,10 +72,10 @@ def extract_feature_vector(metrics: dict) -> List[float]:
     total_time = metrics.get("total_time_ms", 1)
 
     return [
-        _variance(velocities),           # velocity_variance
-        _std_dev(accelerations),          # acceleration_std
-        _entropy(intervals),             # click_entropy
-        _curvature_score(mouse_path),    # curvature_score
-        float(dwell_ms),                 # initial_delay (ms)
-        float(scroll_jitter) / max(total_time / 1000, 0.1),  # jitter_score (per sec)
+        _variance(velocities),           
+        _std_dev(accelerations),          
+        _entropy(intervals),             
+        _curvature_score(mouse_path),    
+        float(dwell_ms),                 
+        float(scroll_jitter) / max(total_time / 1000, 0.1),  
     ]

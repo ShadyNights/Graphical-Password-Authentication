@@ -4,7 +4,7 @@ from typing import List
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from app.security.hsm_client import keys
 
-# Initialize AES-GCM with key from HSM provider
+
 _aes_key = keys.get_aes_key()
 _aesgcm = AESGCM(_aes_key)
 

@@ -11,7 +11,7 @@ class User(Base):
     username = Column(String(64), unique=True, nullable=False, index=True)
     gpa_hash = Column(LargeBinary, nullable=False)
     salt = Column(LargeBinary, nullable=False)
-    recognition_blob = Column(LargeBinary, nullable=False)  # AES-256-GCM encrypted image IDs
+    recognition_blob = Column(LargeBinary, nullable=False)  
     failed_attempts = Column(Integer, default=0)
     lockout_until = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -27,15 +27,15 @@ class AuditLog(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String, nullable=True, index=True)
     username = Column(String(64), nullable=True, index=True)
-    ip = Column(String(45), nullable=True)            # IPv4/IPv6
-    device_hash = Column(String(64), nullable=True)    # SHA-256 fingerprint
+    ip = Column(String(45), nullable=True)            
+    device_hash = Column(String(64), nullable=True)    
     risk_score = Column(Float, default=0.0)
-    ml_score = Column(Float, nullable=True)            # Isolation Forest score
+    ml_score = Column(Float, nullable=True)            
     action = Column(String(64), nullable=False, index=True)
-    details = Column(Text, nullable=True)              # JSON extra data
+    details = Column(Text, nullable=True)              
     timestamp = Column(DateTime, default=datetime.utcnow, index=True)
-    previous_hash = Column(String(128), nullable=True)   # SHA3-256 of previous entry
-    entry_hash = Column(String(128), nullable=False)      # SHA3-256(entry + previous_hash)
+    previous_hash = Column(String(128), nullable=True)   
+    entry_hash = Column(String(128), nullable=False)      
 
 
 class Session(Base):

@@ -1,16 +1,4 @@
-/**
- * Device Fingerprint Generator
- *
- * Collects non-invasive device attributes and produces a SHA-256 hash.
- * Used for device anomaly detection in the risk scoring model.
- *
- * Attributes collected:
- * - Screen resolution
- * - Timezone
- * - CPU core count
- * - Canvas rendering hash
- * - WebGL renderer string
- */
+
 
 async function sha256(message: string): Promise<string> {
     const msgBuffer = new TextEncoder().encode(message);

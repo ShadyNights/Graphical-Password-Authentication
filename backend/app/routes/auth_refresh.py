@@ -21,31 +21,31 @@ async def refresh_token(
     payload: RefreshRequest,
     db: AsyncSession = Depends(get_db)
 ):
-    # 1. Verify token signature
-    # In a real app, verify_jwt_token checks signature + exp
+    
+    
     decoded = verify_jwt_token(payload.refresh_token)
     if not decoded:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-    # 2. Check DB for session revocation/rotation
+    
     repo = SessionRepository(db)
     session = await repo.get_session_by_token(payload.refresh_token)
     
-    # If session usage is enforced, uncomment:
-    # if not session:
-    #     raise HTTPException(status_code=401, detail="Session revoked")
     
-    # 3. Rotate tokens
+    
+    
+    
+    
     user_id = decoded.get("sub")
     username = decoded.get("username")
     
-    new_access = create_jwt_token(username, user_id) # Short lived
-    new_refresh = create_jwt_token(username, user_id, expires_delta=timedelta(days=7)) # Long lived
+    new_access = create_jwt_token(username, user_id) 
+    new_refresh = create_jwt_token(username, user_id, expires_delta=timedelta(days=7)) 
     
-    # 4. Update Session in DB
+    
     if session:
-        # Rotation: delete old, create new? or update?
-        # For strict rotation, we replace.
+        
+        
         await repo.delete_session(payload.refresh_token)
         await repo.create_session(
             user_id=user_id,

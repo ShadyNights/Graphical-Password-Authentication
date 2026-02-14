@@ -5,7 +5,7 @@ from typing import Any
 
 logger = logging.getLogger("gpa.ml")
 
-# Configured path relative to project root
+
 MODEL_PATH = Path(__file__).parent.parent.parent / "ml" / "isolation_forest.pkl"
 
 
@@ -17,7 +17,7 @@ def load_model() -> dict:
             if isinstance(data, dict) and "model" in data:
                 logger.info(f"Loaded biometric model + {len(data.get('profiles', {}))} profiles")
                 return data
-            # Legacy or raw model support
+            
             return {"model": data, "profiles": {}}
         except Exception as e:
             logger.warning(f"Failed to load ML state: {e}")

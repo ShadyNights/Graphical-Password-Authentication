@@ -37,7 +37,7 @@ class AuditRepository:
     ):
         previous_hash = await self._get_last_hash()
 
-        # Build canonical entry string for hashing
+        
         entry_data = json.dumps({
             "user_id": user_id,
             "action": action,

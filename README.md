@@ -66,6 +66,8 @@ This system replaces text-based credentials with a **hybrid graphical authentica
 
 # 🏗 Architecture Overview
 
+> **Deep Dive:** See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed state machine and cryptographic flow.
+
 ```
 User
   ↓

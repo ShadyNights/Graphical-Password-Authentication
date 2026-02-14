@@ -1,4 +1,4 @@
-# Facade for retrieving pepper from HSM/KeyProvider
+
 from app.security.hsm_client import keys
 
 def get_argon2_pepper() -> bytes:

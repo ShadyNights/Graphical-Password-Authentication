@@ -20,18 +20,18 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         response = await call_next(request)
 
-        # Prevent MIME-type sniffing
+        
         response.headers["X-Content-Type-Options"] = "nosniff"
 
-        # Prevent clickjacking
+        
         response.headers["X-Frame-Options"] = "DENY"
 
-        # HTTP Strict Transport Security (2 years)
+        
         response.headers["Strict-Transport-Security"] = (
             "max-age=63072000; includeSubDomains; preload"
         )
 
-        # Content Security Policy — strict default
+        
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
             "script-src 'self'; "
@@ -42,13 +42,13 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "frame-ancestors 'none'"
         )
 
-        # Prevent referer leakage
+        
         response.headers["Referrer-Policy"] = "no-referrer"
 
-        # XSS protection (legacy browsers)
+        
         response.headers["X-XSS-Protection"] = "1; mode=block"
 
-        # Restrict browser APIs
+        
         response.headers["Permissions-Policy"] = (
             "camera=(), microphone=(), geolocation=(), payment=()"
         )

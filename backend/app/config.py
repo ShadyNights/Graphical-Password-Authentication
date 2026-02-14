@@ -18,14 +18,14 @@ class Settings(BaseSettings):
     LOCKOUT_DURATION_MINUTES: int = 30
     RATE_LIMIT_WINDOW_SECONDS: int = 600
     RATE_LIMIT_MAX_REQUESTS: int = 20
-    ARGON2_MEMORY_COST: int = 65536  # 64MB
+    ARGON2_MEMORY_COST: int = 65536  
     ARGON2_TIME_COST: int = 2
     ARGON2_PARALLELISM: int = 2
-    CLICK_TOLERANCE: float = 0.30  # 30% normalized radius (Super easy for testing)
+    CLICK_TOLERANCE: float = 0.30  
     REQUIRED_IMAGE_SELECTIONS: int = 3
     REQUIRED_CLICK_POINTS: int = 6
     TOTAL_IMAGES_SHOWN: int = 12
-    CONSTANT_RESPONSE_MS: int = 160  # Target constant response time
+    CONSTANT_RESPONSE_MS: int = 160  
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod

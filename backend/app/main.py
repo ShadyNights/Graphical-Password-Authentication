@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
     try:
         await init_db()
     except Exception as e:
-        # Race condition on multiprocess startup is expected if tables created by another worker
+        
         pass
     yield
 
@@ -26,17 +26,17 @@ app = FastAPI(
     description="Adversarial-grade GPA with hybrid recognition + cued recall",
     version="2.0.0",
     lifespan=lifespan,
-    docs_url=None if PRODUCTION else "/docs",      # Disable in prod
-    redoc_url=None if PRODUCTION else "/redoc",     # Disable in prod
+    docs_url=None if PRODUCTION else "/docs",      
+    redoc_url=None if PRODUCTION else "/redoc",     
     openapi_url=None if PRODUCTION else "/openapi.json",
 )
 
-# Initialize Logging
+
 setup_logging()
 
-# ── Middleware Stack (order matters: last added = first executed) ──────────
 
-# 4. CORS (Inner)
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[settings.FRONTEND_URL, "http://localhost:5173", "http://127.0.0.1:5173"],
@@ -45,16 +45,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 3. Request ID
+
 app.add_middleware(RequestIdMiddleware)
 
-# 2. Security Headers
+
 app.add_middleware(SecurityHeadersMiddleware)
 
-# 1. Global Timing Padding (Outermost - First executed, Last to return)
+
 app.add_middleware(TimingGuardMiddleware)
 
-# ── Routes ─────────────────────────────────────────────────────────────────
+
 
 app.include_router(api_router)
 

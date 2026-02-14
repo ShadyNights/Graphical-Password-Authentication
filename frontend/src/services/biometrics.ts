@@ -1,16 +1,4 @@
-/**
- * Behavioral Biometrics Collector
- *
- * Captures mouse movement and interaction signals for server-side risk analysis.
- *
- * Signals collected:
- * - Mouse velocities and accelerations
- * - Path coordinates (for curvature analysis)
- * - Click interval timing
- * - Dwell time before first click
- * - Scroll jitter events
- * - Honey-pixel hit detection
- */
+
 
 export interface BiometricsData {
     velocities: number[];
@@ -37,7 +25,7 @@ export class BiometricsCollector {
     private scrollCount: number = 0;
     private honeyPixelHits: number = 0;
 
-    // Honey pixel zones — invisible traps at exact grid centers
+    
     private honeyPixels: { x: number; y: number }[] = [
         { x: 0.25, y: 0.25 },
         { x: 0.5, y: 0.5 },
@@ -61,7 +49,7 @@ export class BiometricsCollector {
         this.scrollCount = 0;
         this.honeyPixelHits = 0;
 
-        // Track scroll jitter
+        
         this.scrollHandler = () => { this.scrollCount++; };
         window.addEventListener('scroll', this.scrollHandler, { passive: true });
     }
@@ -70,7 +58,7 @@ export class BiometricsCollector {
         const now = Date.now();
         const pos = { x: clientX, y: clientY, t: now };
 
-        // Sample path (every 5th point to avoid huge arrays)
+        
         if (this.mousePath.length < 200) {
             if (this.mousePath.length === 0 || now - this.mousePath[this.mousePath.length - 1].t > 30) {
                 this.mousePath.push(pos);
@@ -78,8 +66,8 @@ export class BiometricsCollector {
         }
 
         if (this.lastMousePos) {
-            const dt = (now - this.lastMousePos.t) / 1000; // seconds
-            if (dt > 0.005) { // Min 5ms between samples
+            const dt = (now - this.lastMousePos.t) / 1000; 
+            if (dt > 0.005) { 
                 const dx = clientX - this.lastMousePos.x;
                 const dy = clientY - this.lastMousePos.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
@@ -87,7 +75,7 @@ export class BiometricsCollector {
 
                 this.velocities.push(velocity);
 
-                // Acceleration (change in velocity over time)
+                
                 if (this.lastVelocity > 0) {
                     const acceleration = (velocity - this.lastVelocity) / dt;
                     this.accelerations.push(Math.abs(acceleration));
@@ -102,18 +90,18 @@ export class BiometricsCollector {
     recordClick(normalizedX: number, normalizedY: number) {
         const now = Date.now();
 
-        // Dwell time: time from start to first click
+        
         if (this.firstClickTime === 0) {
             this.firstClickTime = now;
         }
 
-        // Click intervals
+        
         if (this.lastClickTime > 0) {
             this.clickIntervals.push(now - this.lastClickTime);
         }
         this.lastClickTime = now;
 
-        // Honey-pixel detection: check if click is suspiciously close to exact grid centers
+        
         for (const hp of this.honeyPixels) {
             if (Math.abs(normalizedX - hp.x) < 0.005 && Math.abs(normalizedY - hp.y) < 0.005) {
                 this.honeyPixelHits++;
@@ -124,11 +112,11 @@ export class BiometricsCollector {
     getData(): BiometricsData {
         const now = Date.now();
         return {
-            velocities: this.velocities.slice(-50), // Last 50 samples
+            velocities: this.velocities.slice(-50), 
             accelerations: this.accelerations.slice(-50),
             click_intervals: this.clickIntervals,
             mouse_path: this.mousePath.slice(-100).map(p => ({
-                x: p.x / window.innerWidth, // Normalize to 0-1
+                x: p.x / window.innerWidth, 
                 y: p.y / window.innerHeight,
                 t: p.t - this.startTime,
             })),

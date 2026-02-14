@@ -13,7 +13,7 @@ class ChallengeRequest(BaseModel):
 
 class ChallengeResponse(BaseModel):
     challenge_id: str
-    image_pool: List[dict]  # [{id, url}] — 12 images for recognition
+    image_pool: List[dict]  
     message: str = "Challenge issued"
 
 
@@ -29,8 +29,8 @@ class LoginRequest(BaseModel):
     challenge_id: str
     selected_image_ids: List[str] = Field(..., min_length=3, max_length=3)
     click_points: List[Point] = Field(..., min_length=6, max_length=6)
-    mouse_metrics: Optional[dict] = None  # Behavioral biometrics data
-    device_fingerprint: Optional[str] = None  # SHA-256 hash of device attributes
+    mouse_metrics: Optional[dict] = None  
+    device_fingerprint: Optional[str] = None  
 
 
 class AuthResponse(BaseModel):
@@ -38,4 +38,4 @@ class AuthResponse(BaseModel):
     challenge_id: Optional[str] = None
     message: str = "Authentication result pending"
     token: Optional[str] = None
-    risk_level: Optional[str] = None  # "normal", "suspicious", "bot_likely"
+    risk_level: Optional[str] = None  

@@ -10,13 +10,13 @@ class UserProfile:
     def __init__(self, username: str):
         self.username = username
         self.count = 0
-        # Tracks: [velocity_variance, click_entropy, curvature, dwell_time]
+        
         self.means = np.zeros(4)
-        self.M2 = np.zeros(4)  # Sum of squares of differences
+        self.M2 = np.zeros(4)  
 
     def update(self, features: List[float]):
         """Update profile with new feature vector (online learning)."""
-        # Feature indices: 0=vel_var, 2=entropy, 3=curvature, 4=dwell
+        
         selected = np.array([features[0], features[2], features[3], features[4]])
         
         self.count += 1
@@ -33,7 +33,7 @@ class UserProfile:
         variances = self.M2 / (self.count - 1)
         stds = np.sqrt(variances)
         
-        # Avoid division by zero
+        
         stds[stds < 1e-6] = 1.0
         
         selected = np.array([features[0], features[2], features[3], features[4]])

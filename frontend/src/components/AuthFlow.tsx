@@ -14,7 +14,7 @@ type Phase = 'username' | 'recognition' | 'recall' | 'loading' | 'success' | 'fa
 const REQUIRED_IMAGES = 3;
 const REQUIRED_POINTS = 6;
 
-/* ── Challenge-Handshake Phases ─────────────────────────────────────── */
+
 const HANDSHAKE_PHASES = [
     { label: 'Validating Nonce', icon: '🔑' },
     { label: 'Verifying Credentials', icon: '🛡️' },
@@ -36,15 +36,15 @@ export default function AuthFlow() {
     const [deviceFp, setDeviceFp] = useState('');
     const [handshakeStep, setHandshakeStep] = useState(0);
 
-    // Phase II: Biometrics collector instance
+    
     const biometricsRef = useRef<BiometricsCollector>(new BiometricsCollector());
 
-    // Generate device fingerprint on mount
+    
     useEffect(() => {
         generateDeviceFingerprint().then(setDeviceFp);
     }, []);
 
-    // Track mouse movements globally during auth flow
+    
     useEffect(() => {
         if (phase === 'recognition' || phase === 'recall') {
             const handler = (e: MouseEvent) => {
@@ -55,7 +55,7 @@ export default function AuthFlow() {
         }
     }, [phase]);
 
-    // Handshake animation timer
+    
     useEffect(() => {
         if (phase !== 'loading') return;
         setHandshakeStep(0);
@@ -89,7 +89,7 @@ export default function AuthFlow() {
         resetFlow();
     }, [resetFlow]);
 
-    // ── Phase 1: Request Challenge ──────────────────────────────────────
+    
 
     const handleUsernameSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
@@ -113,7 +113,7 @@ export default function AuthFlow() {
         }
     }, [username]);
 
-    // ── Phase 2: Image Recognition ──────────────────────────────────────
+    
 
     const handleImageToggle = useCallback((id: string) => {
         setSelectedImageIds((prev) => {
@@ -128,7 +128,7 @@ export default function AuthFlow() {
         setPhase('recall');
     }, [selectedImageIds]);
 
-    // ── Phase 3: Cued Recall (Click Points) ─────────────────────────────
+    
 
     const handleAddPoint = useCallback((point: Point) => {
         biometricsRef.current.recordClick(point.x, point.y);
@@ -138,7 +138,7 @@ export default function AuthFlow() {
         });
     }, []);
 
-    // ── Submit ──────────────────────────────────────────────────────────
+    
 
     const handleSubmit = useCallback(async () => {
         if (clickPoints.length !== REQUIRED_POINTS) return;
@@ -167,7 +167,7 @@ export default function AuthFlow() {
         }
     }, [clickPoints, mode, username, challengeId, selectedImageIds, deviceFp]);
 
-    // ── Derived state ──────────────────────────────────────────────────
+    
 
     const primaryCategory = imagePool.find((img) => img.id === selectedImageIds[0])?.category || 'default';
 
@@ -184,7 +184,7 @@ export default function AuthFlow() {
 
     return (
         <>
-            {/* ── Pill Toggle (Mode Switcher) ─────────────────────── */}
+            {}
             <div className="pill-toggle">
                 <div className={`slider ${mode}`} />
                 <button
@@ -203,7 +203,7 @@ export default function AuthFlow() {
                 </button>
             </div>
 
-            {/* ── Auth Card ───────────────────────────────────────── */}
+            {}
             <div className="auth-card">
                 <div className="auth-card-header">
                     <h2>
@@ -216,7 +216,7 @@ export default function AuthFlow() {
                     </span>
                 </div>
 
-                {/* ── Phase Indicator (Node-Line) ──────────────────── */}
+                {}
                 {phase !== 'success' && phase !== 'failed' && (
                     <div className="phase-line">
                         {phaseSteps.map((step, i) => (
@@ -234,7 +234,7 @@ export default function AuthFlow() {
                 )}
 
                 <div className="auth-card-body">
-                    {/* ── Username Phase ────────────────────────────── */}
+                    {}
                     {phase === 'username' && (
                         <form className="username-form" onSubmit={handleUsernameSubmit}>
                             <div className="input-group">
@@ -272,7 +272,7 @@ export default function AuthFlow() {
                         </form>
                     )}
 
-                    {/* ── Recognition Phase ─────────────────────────── */}
+                    {}
                     {phase === 'recognition' && (
                         <div>
                             <p className="phase-description">
@@ -300,7 +300,7 @@ export default function AuthFlow() {
                         </div>
                     )}
 
-                    {/* ── Recall Phase ──────────────────────────────── */}
+                    {}
                     {phase === 'recall' && (
                         <div>
                             <p className="phase-description">
@@ -333,7 +333,7 @@ export default function AuthFlow() {
                         </div>
                     )}
 
-                    {/* ── Loading Phase (Challenge-Handshake Skeleton) ── */}
+                    {}
                     {phase === 'loading' && (
                         <div className="handshake-container" role="status" aria-label="Authentication in progress">
                             {HANDSHAKE_PHASES.map((step, i) => (
@@ -354,7 +354,7 @@ export default function AuthFlow() {
                         </div>
                     )}
 
-                    {/* ── Success Phase ─────────────────────────────── */}
+                    {}
                     {phase === 'success' && result && (
                         <div className="result-screen success-glow neon-success">
                             <div className="result-icon success" aria-hidden="true">✓</div>
@@ -388,7 +388,7 @@ export default function AuthFlow() {
                         </div>
                     )}
 
-                    {/* ── Failed Phase ──────────────────────────────── */}
+                    {}
                     {phase === 'failed' && result && (
                         <div className="result-screen neon-error shake">
                             <div className="result-icon failure" aria-hidden="true">✕</div>
@@ -414,7 +414,7 @@ export default function AuthFlow() {
                 </div>
             </div>
 
-            {/* ── Security Status Bar ──────────────────────────────── */}
+            {}
             <div className="status-bar" role="status" aria-label="Security status indicators">
                 <div className="status-item">
                     <span className="status-dot" />

@@ -29,7 +29,7 @@ def setup_logging():
     handler.setFormatter(JSONFormatter())
     root_logger.addHandler(handler)
     
-    # Silence uvicorn access logs to avoid duplicate/non-json logs if needed
-    # logging.getLogger("uvicorn.access").handlers = []
+    
+    
     
     return root_logger

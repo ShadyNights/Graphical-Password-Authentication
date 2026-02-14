@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { Point } from '../services/api';
 
-// SVG background pattern for click target — a rich, detailed scene
+
 function CanvasBackground({ category }: { category: string }) {
     const patterns: Record<string, React.ReactNode> = {
         mountain: (
@@ -71,7 +71,7 @@ function CanvasBackground({ category }: { category: string }) {
         ),
     };
 
-    // Default: abstract geometric pattern
+    
     const defaultPattern = (
         <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -101,7 +101,7 @@ function CanvasBackground({ category }: { category: string }) {
     );
 }
 
-/* ── Connection Lines SVG ──────────────────────────────────────────────── */
+
 function ConnectionLines({ points }: { points: Point[] }) {
     if (points.length < 2) return null;
     return (
@@ -128,7 +128,7 @@ interface Props {
     points: Point[];
     onAddPoint: (point: Point) => void;
     maxPoints: number;
-    showPoints: boolean; // true during registration, restricted during login
+    showPoints: boolean; 
     disabled?: boolean;
 }
 
@@ -142,7 +142,7 @@ export default function ClickCanvas({ category, points, onAddPoint, maxPoints, s
         const rect = containerRef.current?.getBoundingClientRect();
         if (!rect) return;
 
-        // Normalize coordinates to 0-1 range
+        
         const x = (e.clientX - rect.left) / rect.width;
         const y = (e.clientY - rect.top) / rect.height;
 
@@ -166,10 +166,10 @@ export default function ClickCanvas({ category, points, onAddPoint, maxPoints, s
             >
                 <CanvasBackground category={category} />
 
-                {/* Connection lines between sequential points (registration only) */}
+                {}
                 {showPoints && <ConnectionLines points={points} />}
 
-                {/* Render neon ring click points */}
+                {}
                 {points.map((pt, i) => (
                     <div
                         key={i}

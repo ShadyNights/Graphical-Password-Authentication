@@ -7,10 +7,10 @@ from app.config import settings
 from app.security.audit import audit_log
 from app.db.redis_client import redis_client
 
-# Fallback in-memory store if Redis fails
+
 _local_challenges: dict = {}
 
-# Image pool — 20 abstract images
+
 IMAGE_POOL = [
     {"id": f"img_{i:02d}", "label": f"Image {i}", "category": cat}
     for i, cat in enumerate([
@@ -36,7 +36,7 @@ def create_challenge(username: str) -> dict:
 
     if redis_client:
         try:
-            # Store with 5 minute TTL (300s)
+            
             redis_client.setex(
                 f"challenge:{challenge_id}",
                 300,
@@ -59,7 +59,7 @@ def validate_challenge(challenge_id: str, username: str) -> Optional[dict]:
     """Validate and consume a challenge nonce (one-time use)."""
     challenge_data = None
     
-    # Try Redis first
+    
     if redis_client:
         try:
             data_str = redis_client.get(f"challenge:{challenge_id}")
@@ -68,7 +68,7 @@ def validate_challenge(challenge_id: str, username: str) -> Optional[dict]:
         except Exception:
             pass
     
-    # Try local if not found (fallback)
+    
     if not challenge_data:
         challenge_data = _local_challenges.get(challenge_id)
 
@@ -82,7 +82,7 @@ def validate_challenge(challenge_id: str, username: str) -> Optional[dict]:
     if challenge_data.get("username") != username:
         return None
         
-    # Check expiry (Redis handles cleaning, but explicit check is good)
+    
     if time.time() - challenge_data["created_at"] > 300:
         if redis_client:
             redis_client.delete(f"challenge:{challenge_id}")
@@ -90,14 +90,14 @@ def validate_challenge(challenge_id: str, username: str) -> Optional[dict]:
             del _local_challenges[challenge_id]
         return None
 
-    # Mark as used (Atomic delete in Redis to prevent replay? Or strict used flag?)
-    # Deleting it is safest for one-time use.
+    
+    
     if redis_client:
         redis_client.delete(f"challenge:{challenge_id}")
     else:
         del _local_challenges[challenge_id]
 
-    # Return the data (even if deleted, we have the variable)
+    
     return challenge_data
 
 

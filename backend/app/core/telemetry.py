@@ -1,5 +1,5 @@
-# Stub for OpenTelemetry integration
-# In production, this would initialize the OTLP exporter
+
+
 
 def setup_telemetry(app_name: str):
     """

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageInfo } from '../services/api';
 
-// Emoji map for visual representation of image categories
+
 const CATEGORY_EMOJIS: Record<string, string> = {
     mountain: '🏔️',
     ocean: '🌊',
@@ -25,7 +25,7 @@ const CATEGORY_EMOJIS: Record<string, string> = {
     meadow: '🌻',
 };
 
-// Unique gradient for each image based on category
+
 const CATEGORY_GRADIENTS: Record<string, string> = {
     mountain: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     ocean: 'linear-gradient(135deg, #0093E9 0%, #80D0C7 100%)',

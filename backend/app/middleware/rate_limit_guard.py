@@ -7,8 +7,8 @@ class RateLimitGuardMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         client_ip = request.client.host if request.client else "unknown"
         
-        # Simple global check, for route specific use check_rate_limit in route
-        # This acts as a global WAF-lite
+        
+        
         if not check_rate_limit(client_ip):
             return JSONResponse({"error": "Too Many Requests"}, status_code=429)
             

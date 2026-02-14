@@ -6,7 +6,7 @@ from argon2.exceptions import VerifyMismatchError
 from app.config import settings
 from app.security.hsm_client import keys
 
-# Argon2id Hasher
+
 ph = PasswordHasher(
     memory_cost=settings.ARGON2_MEMORY_COST,
     time_cost=settings.ARGON2_TIME_COST,
@@ -14,9 +14,9 @@ ph = PasswordHasher(
     hash_len=32,
 )
 
-# Dynamic Grid based on Tolerance
-# Tolerance is % of screen width/height that counts as "same cell"
-# e.g. 0.10 (10%) of 1920 is 192px cell size
+
+
+
 t = settings.CLICK_TOLERANCE
 CELL_W = max(20, int(1920 * t))
 CELL_H = max(20, int(1080 * t))

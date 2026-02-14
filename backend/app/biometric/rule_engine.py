@@ -2,7 +2,7 @@ from typing import Optional
 from app.biometric.feature_extractor import _variance, _entropy, _curvature_score
 from app.security.audit import audit_log
 
-# Device fingerprint history: {username: [fingerprint_hash, ...]}
+
 from collections import defaultdict
 _device_history: defaultdict = defaultdict(list)
 
@@ -21,12 +21,12 @@ def validate_device_fingerprint(username: str, fingerprint_hash: str) -> str:
     if fingerprint_hash in history:
         return "known"
 
-    # Allow up to 5 known devices
+    
     if len(history) < 5:
         _device_history[username].append(fingerprint_hash)
         return "new_device"
 
-    # Too many devices — anomalous
+    
     audit_log("device_anomaly", username=username, device_fingerprint=fingerprint_hash,
               details={"known_devices": len(history)})
     return "anomalous"
@@ -48,7 +48,7 @@ def analyze_behavioral_biometrics(metrics: Optional[dict]) -> dict:
     reasons = []
     component_scores = {}
 
-    # ── 1. Velocity Variance (weight: 0.3) ─────────────────────────────
+    
     velocity_score = 0.0
     velocities = metrics.get("velocities", [])
     if velocities and len(velocities) > 2:
@@ -73,7 +73,7 @@ def analyze_behavioral_biometrics(metrics: Optional[dict]) -> dict:
 
     component_scores["velocity_variance"] = round(velocity_score, 4)
 
-    # ── 2. Click Interval Entropy (weight: 0.2) ───────────────────────
+    
     entropy_score = 0.0
     intervals = metrics.get("click_intervals", [])
     if intervals and len(intervals) > 2:
@@ -93,7 +93,7 @@ def analyze_behavioral_biometrics(metrics: Optional[dict]) -> dict:
 
     component_scores["click_entropy"] = round(entropy_score, 4)
 
-    # ── 3. Path Curvature (weight: 0.2) ────────────────────────────────
+    
     mouse_path = metrics.get("mouse_path", [])
     curvature_score = _curvature_score(mouse_path)
     if curvature_score > 0.8:
@@ -103,7 +103,7 @@ def analyze_behavioral_biometrics(metrics: Optional[dict]) -> dict:
 
     component_scores["curvature"] = round(curvature_score, 4)
 
-    # ── 4. Device Anomaly Score (weight: 0.3) ──────────────────────────
+    
     device_score = 0.0
     dwell_time = metrics.get("dwell_time_ms", 0)
     if 0 < dwell_time < 100:
@@ -139,7 +139,7 @@ def analyze_behavioral_biometrics(metrics: Optional[dict]) -> dict:
     device_score = min(device_score, 1.0)
     component_scores["device_anomaly"] = round(device_score, 4)
 
-    # ── Weighted Risk Score ────────────────────────────────────────────
+    
     risk_score = (
         0.3 * velocity_score +
         0.2 * entropy_score +
@@ -148,7 +148,7 @@ def analyze_behavioral_biometrics(metrics: Optional[dict]) -> dict:
     )
     risk_score = min(risk_score, 1.0)
 
-    # ── Risk Level Classification ──────────────────────────────────────
+    
     if risk_score < 0.3:
         risk_level = "normal"
     elif risk_score < 0.6:

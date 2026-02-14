@@ -4,7 +4,7 @@ from collections import defaultdict
 from app.config import settings
 from app.security.audit import audit_log
 
-# Rate limiting: {ip: [timestamp, ...]}
+
 _rate_limits: defaultdict = defaultdict(list)
 
 
@@ -30,9 +30,9 @@ def get_escalation_delay(risk_score: float) -> float:
     if risk_score < 0.3:
         return 0.0
     elif risk_score < 0.6:
-        return 1.0 + (risk_score - 0.3) * 10  # 1-4 seconds
+        return 1.0 + (risk_score - 0.3) * 10  
     else:
-        return 3.0 + (risk_score - 0.6) * 15  # 3-9 seconds
+        return 3.0 + (risk_score - 0.6) * 15  
 
 
 def is_account_locked(user) -> bool:

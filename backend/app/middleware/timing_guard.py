@@ -17,7 +17,7 @@ from starlette.responses import Response
 
 logger = logging.getLogger("gpa.guard")
 
-MIN_RESPONSE_MS = 180  # Minimum response time for auth endpoints
+MIN_RESPONSE_MS = 180  
 AUTH_PREFIXES = ("/api/auth/login", "/api/auth/register")
 
 
@@ -27,7 +27,7 @@ class TimingGuardMiddleware(BaseHTTPMiddleware):
 
         response = await call_next(request)
 
-        # Only pad auth-sensitive endpoints
+        
         path = request.url.path
         if any(path.startswith(p) for p in AUTH_PREFIXES):
             elapsed_ms = (time.time() - start) * 1000

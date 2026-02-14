@@ -27,6 +27,6 @@ class SessionRepository:
         await self.db.commit()
 
     async def cleanup_expired_sessions(self):
-        # Implementation depends on DB dialect, simple delete for now
+        
         await self.db.execute(delete(Session).where(Session.expires_at < datetime.utcnow()))
         await self.db.commit()
