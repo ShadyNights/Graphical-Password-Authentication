@@ -26,3 +26,7 @@ Thumbs.db
 backend/gpa.db
 backend/.env
 deployment_secrets.txt
+
+# Audit & Setup Docs (local only)
+PROJECT_SPECIFICATION.md
+LOCAL_SETUP.md
