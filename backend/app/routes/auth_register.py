@@ -60,14 +60,9 @@ async def register(req: RegisterRequest, request: Request, db: AsyncSession = De
 
     audit_log("register_success", username=req.username, client_ip=client_ip)
 
-    try:
-        debug_info = get_gpa_debug_info(req.selected_image_ids, points)
-    except Exception as e:
-        debug_info = f"DEBUG_ERROR: {str(e)}"
-    
     return AuthResponse(
         status="success",
-        message=f"Registration complete. DEBUG: {json.dumps(debug_info) if isinstance(debug_info, dict) else debug_info}",
+        message="Registration complete",
         token=token,
         risk_level="normal",
     )
