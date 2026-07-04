@@ -28,7 +28,7 @@ jobs:
       run: bandit -r backend/app -c bandit.yaml || true
       
     - name: Dependency Scan (Safety)
-      run: safety check
+      run: safety scan --policy-file backend/.safety-policy.yml
       
     - name: Run Tests
       working-directory: ./backend
