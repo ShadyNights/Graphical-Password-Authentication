@@ -1,32 +1,89 @@
-# Node
+# =========================
+# Node.js
+# =========================
 node_modules/
 dist/
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
+# =========================
 # Python
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
-venv/
-.env
-.venv
-env/
+*.so
+*.egg
 *.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
-# OS
-.DS_Store
-Thumbs.db
+venv/
+.venv/
+env/
+ENV/
 
-# Editor
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+
+# =========================
+# Database
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+backend/gpa.db
+
+# =========================
+# Logs
+# =========================
+*.log
+backend/audit.log
+backend/server.log
+backend/server_debug_routes.log
+
+# =========================
+# Build Outputs
+# =========================
+frontend/dist/
+build/
+coverage/
+
+# =========================
+# IDEs & Editors
+# =========================
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# GPA Specific
-backend/gpa.db
-backend/.env
+# =========================
+# Operating System
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Secrets
+# =========================
 deployment_secrets.txt
 
-# Audit & Setup Docs (local only)
+# =========================
+# Local Documentation
+# =========================
 PROJECT_SPECIFICATION.md
-LOCAL_SETUP.md
+complete_codebase_documentation.md
+forensic_audit_report.md
