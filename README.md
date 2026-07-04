@@ -1,6 +1,4 @@
 <div align="center">
-  <img src="docs/assets/banner.png" alt="Graphical Password Authentication Banner" width="100%" />
-
   <h1>🔐 Next-Gen Graphical Password Authentication (GPA)</h1>
 
   <p><strong>A production-grade, adversarial-resistant graphical authentication system delivering high-entropy, zero-knowledge, phishing-resistant security.</strong></p>

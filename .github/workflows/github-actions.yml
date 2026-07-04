@@ -22,13 +22,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r backend/requirements.txt
-        pip install coverage bandit safety
+        pip install coverage bandit pip-audit
         
     - name: Security Scan (Bandit)
       run: bandit -r backend/app -c bandit.yaml || true
       
-    - name: Dependency Scan (Safety)
-      run: safety scan --policy-file backend/.safety-policy.yml
+    - name: Dependency Scan (pip-audit)
+      run: pip-audit -r backend/requirements.txt --ignore-vuln GHSA-gpx5-7hv4 --ignore-vuln GHSA-8gmg-p9rg --ignore-vuln GHSA-vfvc-ph8v
       
     - name: Run Tests
       working-directory: ./backend
