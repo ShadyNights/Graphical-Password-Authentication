@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install python dependencies
 COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
+RUN pip install --user --upgrade pip setuptools wheel && pip install --user --no-cache-dir -r requirements.txt
 
 # ── Runner Stage ─────────────────────────────────────────────────────────────
 FROM python:3.11-slim as runner

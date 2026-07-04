@@ -1,0 +1,5 @@
+# Starlette CVEs 
+# These are unpatchable until FastAPI updates its dependency pins to allow Starlette >= 1.0.0
+CVE-2025-62727
+CVE-2026-48818
+CVE-2026-54283
