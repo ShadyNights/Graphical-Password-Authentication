@@ -1,0 +1,12 @@
+version: '2.0'
+security:
+  ignore-vulnerabilities:
+    78279:
+      reason: "Starlette cannot be upgraded until FastAPI releases support for >=1.0.1. Awaiting upstream fix."
+      expires: "2026-10-01"
+    80876:
+      reason: "Starlette cannot be upgraded until FastAPI releases support for >=1.0.1. Awaiting upstream fix."
+      expires: "2026-10-01"
+    99546:
+      reason: "Starlette cannot be upgraded until FastAPI releases support for >=1.0.1. Awaiting upstream fix."
+      expires: "2026-10-01"
