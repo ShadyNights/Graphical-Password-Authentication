@@ -3,3 +3,7 @@
 CVE-2025-62727
 CVE-2026-48818
 CVE-2026-54283
+
+# Transient vendored dependencies in base Python image (setuptools/_vendor)
+CVE-2026-24049
+CVE-2026-23949
